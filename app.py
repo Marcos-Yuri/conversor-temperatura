@@ -39,6 +39,20 @@ def kelvin_para_celsius_api():
     except (ValueError, TypeError):
         return jsonify({'error': 'Valor inválido para kelvin'}), 400
 
+# Tratamento de erro 404 - rota não encontrada
+@app.errorhandler(404)
+def not_found_error(error):
+    return jsonify({'error': 'Rota não encontrada'}), 404
+
+# Tratamento de erro 500 - erro interno no servidor
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({'error': 'Erro interno no servidor'}), 500
+
+# Tratamento de exceções inesperadas
+@app.errorhandler(Exception)
+def handle_exception(error):
+    return jsonify({'error': str(error)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
